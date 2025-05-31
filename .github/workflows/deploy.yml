@@ -1,0 +1,31 @@
+name: Deploy Script Trigger
+
+on:
+  push:
+    branches:
+      - master  # Remplacez par la branche que vous utilisez
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # GitHub Actions exécute ce travail sur Ubuntu
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2  # Récupère le code source
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3  # Configure l'agent SSH avec la clé privée
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to internal server via VPS
+        run: |
+          # Connexion SSH au VPS
+          sshpass -p "${{ secrets.SAEZFRI_PASSWORD }}" ssh -o StrictHostKeyChecking=no ubuntu@54.36.209.81 "
+            # Connexion au serveur interne
+            sshpass -p '${{ secrets.SAEZFRI_PASSWORD }}' ssh -o StrictHostKeyChecking=no saezfri@100.100.87.90 '
+              cd /Agence/Application/MaPinte/ &&
+              chmod +x ./deploy.sh &&
+              ./deploy.sh
+            '
+          "
