@@ -3,7 +3,7 @@ name: Deploy Script Trigger
 on:
   push:
     branches:
-      - master  # Remplacez par la branche que vous utilisez
+      - main  # Remplacez par la branche que vous utilisez
 
 jobs:
   deploy:
